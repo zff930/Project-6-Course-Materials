@@ -52,40 +52,17 @@ app.post('/api/stuff', (req, res, next) => {
     userId: req.body.userId
   });
   // Save the new instance of Thing to database
-  thing.save().then(
-    () => {
-      res.status(201).json({
-        message: 'Post saved successfully!'
-      });
-    }
-  ).catch(
-    (error) => {
-      // Send a 404 error to the front end, along with the thrown error
-      res.status(400).json({
-        // Return an error object of the error thrown by Mongoose
-        error: error
-      });
-    }
-  );
+  thing.save()
+  .then(() => res.status(201).json({ message: 'Post saved successfully!' }))
+  .catch((err) => res.status(400).json({ error: err })); // Send a 404 error to the front end, along with an error object of the error thrown by Mongoose   
 });
 
 // Intercept GET request
 // Use a colon in front of the dynamic segment of the route to make it accessible as a parameter.
 app.get('/api/stuff/:id', (req, res, next) => {
-  Thing.findOne({
-    // req.params.xxx where xxx is same as xxx after :
-    _id: req.params.id
-  }).then(
-    (thing) => {
-      res.status(200).json(thing);
-    }
-  ).catch(
-    (error) => {
-      res.status(404).json({
-        error: error
-      });
-    }
-  );
+  Thing.findOne({_id: req.params.id}) // req.params.xxx where xxx is same as xxx after :
+  .then((thing) => res.status(200).json(thing))
+  .catch((err) => res.status(400).json({error: err}));
 });
 
 
@@ -102,50 +79,20 @@ app.put('/api/stuff/:id', (req, res, next) => {
     price: req.body.price,
     userId: req.body.userId
   });
-  Thing.updateOne({_id: req.params.id}, thing).then(
-    () => {
-      res.status(201).json({
-        message: 'Thing updated successfully!'
-      });
-    }
-  ).catch(
-    (error) => {
-      res.status(400).json({
-        error: error
-      });
-    }
-  );
+  Thing.updateOne({_id: req.params.id}, thing)
+  .then(() => res.status(201).json({message: 'Thing updated successfully!'}))
+  .catch((err) => res.status(400).json({error: err}));
 });
 
 // Intercept DELETE request
 app.delete('/api/stuff/:id', (req, res, next) => {
-  Thing.deleteOne({_id: req.params.id}).then(
-    () => {
-      res.status(200).json({
-        message: 'Deleted!'
-      });
-    }
-  ).catch(
-    (error) => {
-      res.status(400).json({
-        error: error
-      });
-    }
-  );
+  Thing.deleteOne({_id: req.params.id}).then(() => res.status(200).json({message: 'Deleted!'}))
+  .catch((err) => res.status(400).json({error: err}));
 });
 
 app.use('/api/stuff', (req, res, next) => {
-  Thing.find().then(
-    (things) => {
-      res.status(200).json(things);
-    }
-  ).catch(
-    (error) => {
-      res.status(400).json({
-        error: error
-      });
-    }
-  );
+  Thing.find().then((things) => res.status(200).json(things))
+  .catch((err) => res.status(400).json({error: err}));
 });
 
 // Before we populate our express out, we are going to export it so that we can access it outside this js file.
