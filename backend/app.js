@@ -3,7 +3,10 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+
+// Import routers
 const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -41,8 +44,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Register Express router for all requests to /api/stuff (will be sent to stuffRoutes)
+// Register routers for all requests to the endpoints (will always be sent to the routers)
 app.use('/api/stuff', stuffRoutes);
+app.use('/api/auth', userRoutes);
 
 // Before we populate our express out, we are going to export it so that we can access it outside this js file.
 module.exports = app;
