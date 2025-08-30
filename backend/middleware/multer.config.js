@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-const MIMI_TYPES = {
+const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpeg',
     'image/png': 'png'
@@ -18,4 +18,5 @@ const storage = multer.diskStorage({
     }
 });
 
+// The request must send a form-data body with a field called "image".
 module.exports = multer({storage: storage}).single('image');
