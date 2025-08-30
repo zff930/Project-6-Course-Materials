@@ -3,6 +3,7 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require('path');
 
 // Import routers
 const stuffRoutes = require('./routes/stuff');
@@ -45,6 +46,7 @@ app.use((req, res, next) => {
 });
 
 // Register routers for all requests to the endpoints (will always be sent to the routers)
+app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use('/api/stuff', stuffRoutes);
 app.use('/api/auth', userRoutes);
 
